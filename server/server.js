@@ -23,11 +23,12 @@ io.on('connection', (socket) => {
 
    socket.on('createMessage', (message) => {
         console.log('createMessage', message);
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+       });
     });
-
-    socket.on('createEmail', (newEmail) => {
-        console.log('createEmail', newEmail);
-   });
 
     socket.on('disconnect', () => {
         console.log('User was disconnected');
