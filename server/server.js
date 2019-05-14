@@ -14,11 +14,19 @@ var io = socketIO(server);
 io.on('connection', (socket) => {
     console.log('New user connected');
 
+    //Send welcome to client
     socket.emit('newMessage', {
-        from: 'John',
-        text: 'See you then',
-        createdAt: 123123
+        from: 'Admin',
+        text: 'Welcome to the chat app',
+        createdAt: new Date().getTime()
    });
+   
+   //Send notification to other users
+   socket.broadcast.emit('newMessage', {
+        from: "Admin",
+        text: "New user joined",
+        createdAt: new Date().getTime()
+    });
 
 
    socket.on('createMessage', (message) => {
@@ -27,7 +35,7 @@ io.on('connection', (socket) => {
             from: message.from,
             text: message.text,
             createdAt: new Date().getTime()
-       });
+        });
     });
 
     socket.on('disconnect', () => {
